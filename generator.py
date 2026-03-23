@@ -2,8 +2,11 @@
 This is the most algorithmically interesting file. It contains 2 functions: one that builds a character pool by defining what characters are allowed (in list) and a list of individual character pools 
 and a function thatactually contains the logic to generate the password."""
 
-#Import the string module to be used in the get_character_pool func:
+#Imports the string module to be used in the get_character_pool func:
 import string
+
+#Imports the random module to be used in the generate password fun:
+import random
 
 #Function that based on what the users (boolean value in parameters) wish returns a list on what type of characters to be used in the generate password func:
 def get_character_pool(use_lower = False, use_upper = False, use_digits = False, use_symbols = False):
@@ -34,4 +37,23 @@ def get_character_pool(use_lower = False, use_upper = False, use_digits = False,
 
 #Function that generates the password based on what character types the user wants (see func above):
 def generate_password(length, use_lower, use_upper, use_digits, use_symbols):
-    pass
+    #Calls and establishes the results of the get_character_pool func:
+    selected_char_lst, selected_char_str = get_character_pool(use_lower, use_upper, use_digits, use_symbols)
+    #Creates an empty variable list to store the result:
+    result = []
+    #Loops through the ites in the selected_char_lst:
+    for item in selected_char_lst:
+        result.append(random.choice(item))
+    #Calculates the length thats left to generate a correct password:
+    required_length = length - len(result)
+    #Checks and loops to see if the password is of the required length:
+    while required_length != 0:
+        try:
+            result.append(random.choice(selected_char_str))
+            required_length -= 1
+        except IndexError:
+            print("No character type has been established yet")
+    #Shuffles the result to make sure the password is completely random:
+    random.shuffle(result)
+    #Returns the password in the form of a string:
+    return "".join(result)
