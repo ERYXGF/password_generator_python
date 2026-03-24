@@ -6,10 +6,10 @@ ________________________________________________________________________________
 Awards points for length milestones, awards points for each character category detected as present in the password, applies penalties for weak compositions. 
 This function contains all the mathematical logic.
 _______________________________________________________________________________________________________________________________________________________________________________________________
-2) get_strength_rating(score) — takes the numeric score and returns the corresponding rating string and emoji.
+2) get_strength_rating(points) — takes the numeric score and returns the corresponding rating string and emoji.
 A simple series of comparisons mapping score ranges to labels. Keeps the rating logic separate from the scoring logic.
 _______________________________________________________________________________________________________________________________________________________________________________________________
-3) get_visual_bar(score) — takes the numeric score and returns a formatted string showing the visual progress bar of filled and empty blocks plus the percentage. 
+3) get_visual_bar(points) — takes the numeric score and returns a formatted string showing the visual progress bar of filled and empty blocks plus the percentage. 
 Purely cosmetic, purely string manipulation.
 _______________________________________________________________________________________________________________________________________________________________________________________________
 4) analyse_password(password) — the public-facing function that the rest of the project calls. 
@@ -71,14 +71,25 @@ def get_strength_rating(points):
     result = ""
     #Checks the passwords rating:
     if points <= 39:
-        result += "Faible ❌ [██░░░░░░░░]"
+        result += "Faible ❌"
     elif points<= 59:
-        result += "Moyen ⚠️ [████░░░░░░]"
+        result += "Moyen ⚠️"
     elif points <= 79:
-        result += "Fort ✅ [█████░░░░░]"
+        result += "Fort ✅"
     elif points <= 99:
-        result += "Très fort 💪 [███████░░░]"
+        result += "Très fort 💪"
     else:
-        result += "Excellent 🙌 [██████████]"
+        result += "Excellent 🙌"
     #Returns the result:
     return result
+
+#Function that takes the points given by the calculate_score func and coverts it to a progress bar with a percentage score next to it:
+def get_visual_bar(points):
+    #Calculates how many filled blocks there need to be:
+    filled_blocks = points // 10 
+    #Calculates how many empty blocks there need to be:
+    empty_blocks = 10 - filled_blocks
+    #Puts the filled and empty blocks next to the total percentage out of 100:
+    bar = f"[{filled_blocks * '█'}{empty_blocks * '░'}] {points}%"
+    #Returns the result
+    return bar
