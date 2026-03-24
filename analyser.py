@@ -93,3 +93,16 @@ def get_visual_bar(points):
     bar = f"[{filled_blocks * '█'}{empty_blocks * '░'}] {points}%"
     #Returns the result
     return bar
+
+#Grouping function that combines the functions above and formats correctly the results:
+def analyse_password(password):
+    #Defines points:
+    points = calculate_score(password)
+    #Converts the function's results to a dictionary:
+    difficulty = {
+        "score" : points,
+        "rating" : get_strength_rating(points),
+        "bar" : get_visual_bar(points)
+    }
+    #returns the dictionary:
+    return difficulty
