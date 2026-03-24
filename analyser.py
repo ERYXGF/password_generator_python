@@ -64,3 +64,21 @@ def calculate_score(password):
         points = 100
     #Returns the number of points
     return points
+
+#Function that takes the points given by calculate_score and converts them in a string that displays the strength and a bar that visually represents it:
+def get_strength_rating(points):
+    #Creates a variable to store the result:
+    result = ""
+    #Checks the passwords rating:
+    if points <= 39:
+        result += "Faible ❌ [██░░░░░░░░]"
+    elif points<= 59:
+        result += "Moyen ⚠️ [████░░░░░░]"
+    elif points <= 79:
+        result += "Fort ✅ [█████░░░░░]"
+    elif points <= 99:
+        result += "Très fort 💪 [███████░░░]"
+    else:
+        result += "Excellent 🙌 [██████████]"
+    #Returns the result:
+    return result
