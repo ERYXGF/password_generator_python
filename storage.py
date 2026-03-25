@@ -37,3 +37,12 @@ def load_passwords(password):
     #Loads the file (if it exists):
     with passwords_path.open("r", encoding = "utf-8") as f:
         return json.load(f)
+    
+#Function that saves/dumps the passwords to the json file:
+def save_passwords(passwords):
+    #Checks if any passwords already exist:
+    if not passwords:
+        return ("There are no passwords to save.")
+    #Saves the passwords (If they already exist):
+    with passwords_path.open("w", encoding = "utf-8") as f:
+        return json.dump(passwords, f, indent = 4)
