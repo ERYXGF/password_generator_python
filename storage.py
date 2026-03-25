@@ -22,6 +22,7 @@ ________________________________________________________________________________
 
 #Imports the json module to be able to load, save and access the passwords in the json files:
 import json
+from datetime import date
 
 #Imports the path module:
 from pathlib import Path
@@ -30,19 +31,49 @@ from pathlib import Path
 passwords_path = Path("passwords.json")
 
 #Function that loads passwords.json and returns the list of saved passwords:
-def load_passwords(password):
+def load_passwords():
     #Checks if the file exists:
     if not passwords_path.exists() or passwords_path.stat().st_size == 0:
-        return ("There are no passwords saved yet.")
-    #Loads the file (if it exists):
-    with passwords_path.open("r", encoding = "utf-8") as f:
-        return json.load(f)
+        return []
+    #Loads the file (if it exists), and handles corrupted JSON:
+    try:
+        with passwords_path.open("r", encoding = "utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, list) else []
+    except json.JSONDecodeError:
+        return []
     
 #Function that saves/dumps the passwords to the json file:
 def save_passwords(passwords):
-    #Checks if any passwords already exist:
-    if not passwords:
-        return ("There are no passwords to save.")
     #Saves the passwords (If they already exist):
     with passwords_path.open("w", encoding = "utf-8") as f:
-        return json.dump(passwords, f, indent = 4)
+        json.dump(passwords, f, indent = 4)
+
+#Function that adds a password:
+def add_password(passwords, label, password, strength):
+    entry = {
+        "label": label,
+        "password": password,
+        "strength": strength,
+        "date": date.today().isoformat()
+    }
+    passwords.append(entry)
+    save_passwords(passwords)
+    return passwords
+    
+#Function that deletes a password:
+def delete_password(passwords, index):
+    #Checks if the index does exist:
+    if not isinstance(index, int):
+        return passwords
+    if index < 0 or index >= len(passwords):
+        return passwords
+    #Deletes the password:
+    del passwords[index]
+    #Saves the updated information:
+    save_passwords(passwords)
+    return passwords
+
+#Function that checks if a label already exists:
+def label_exists(passwords, label):
+    return any(entry.get("label") == label for entry in passwords)
