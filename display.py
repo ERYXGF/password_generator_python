@@ -42,3 +42,13 @@ def display_password(password,analysis):
     print(f"{analysis['score']}")
     print(f"{analysis['rating']}")
     print("")
+
+#Function that prints all existing passwords along with their index, label, date saved and strength rating:
+def display_saved_passwords(passwords):
+    #Checks if there are any saved passwords:
+    if not passwords:
+        print("There are no passwords saved yet. Please save one to be able to access this function.")
+        return 
+    #Prints the password along with the pertaining information:
+    for index, item in enumerate(passwords, start = 1):
+        print(f"{index} {item['label']}, {item['date']}, {item['rating']}, {item['password']}")
