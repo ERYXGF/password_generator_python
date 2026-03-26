@@ -52,3 +52,15 @@ def display_saved_passwords(passwords):
     #Prints the password along with the pertaining information:
     for index, item in enumerate(passwords, start = 1):
         print(f"{index} {item['label']}, {item['date']}, {item['rating']}, {item['password']}")
+
+#Function that prints the whole details of a single password:
+def display_single_password(entry):
+    #Checks if the entry exists:
+    if not entry:
+        print("This password hasn't been saved yet.")
+        return
+    #Prints all the password's information:
+    print(f"{entry['label']}")
+    print(f"{entry['date']}") 
+    print(f"{entry['rating']}")
+    print(f"{entry['password']}")
