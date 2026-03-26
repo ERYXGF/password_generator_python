@@ -13,6 +13,12 @@ ________________________________________________________________________________
 ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 """
 
+#Imports all the required functions from my other files: for the main func:
+from display import display_menu, display_password, display_saved_passwords, display_generation_config, display_single_password
+from generator import generate_password
+from analyser import analyse_password
+from storage import save_passwords, load_passwords, delete_password
+
 #Helper function for the generate_password func in generator.py:
 def get_generation_config():
     #Asks user for password length: checks if the length is a number:
@@ -52,3 +58,55 @@ def get_generation_config():
         break
     #Returns the length and wanted character categories:
     return length, use_lower, use_upper, use_digits, use_symbols
+
+def main():
+    #Infinite loop:
+    while True:
+        #Displays the main menu:
+        display_menu()
+        #Validates the user's choice (the one he makes at the main menu)
+        try:
+            user_choice = int(input("Please choose an option (1-5)"))
+        except ValueError:
+            print("Please choose a numerical option (1-5)")
+            continue
+        if user_choice not in range(1,6):
+            print("That option is not supported. Please choose an option between 1 and 5")
+            continue
+        #If user wants to generate a password:
+        if user_choice == 1:
+            display_generation_config()
+            get_generation_config()
+            generate_password(length, use_lower, use_upper, use_digits, use_symbols)
+            analyse_password(password)
+            display_password(password, analysis)
+            answer = input("Do you want to save this password (y/n)? ")
+            if answer in ["y", "yes"]:
+                input("Please input the password's label:")
+                load_passwords()
+                #If label exists print an error and skip save
+                add_password(passwords, label, password, strength)
+                continue
+        #If user wants to view the saved passwords:
+        if user_choice == 2:
+            passwords = load_passwords()
+            display_saved_passwords(passwords)
+        #If user wants to delete a password:
+        if user_choice == 3:
+            passwords = load_passwords()
+            if not passwords:
+                print("There are no passwords saved yet.")
+                continue
+            #Ask + Validate index to delete
+            delete_password(passwords, index)
+        #If user wants to view a specific password based on index:
+        if user_choice == 4:
+            passwords = load_passwords()
+            if not passwords:
+                print("There are no passwords saved yet.")
+                continue
+            #Ask user for index + validate it
+            display_single_password(entry)
+        #If user wants to quit the program:
+        print("Thanks for using the Python Password Generator, see you next time :) !")
+        break
