@@ -64,3 +64,9 @@ def display_single_password(entry):
     print(f"{entry['date']}") 
     print(f"{entry['rating']}")
     print(f"{entry['password']}")
+
+#Function that prints the password generation settings header:
+def display_generation_config():
+    print("+---------------------------------------------------------------------+")
+    print("|                   PASSWORD GENERATION SETTTINGS                     |")
+    print("+---------------------------------------------------------------------+")
