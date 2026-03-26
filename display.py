@@ -24,3 +24,21 @@ def display_menu():
     print("|     4) View a (specific according to label) saved password          |")        
     print("|     5) Delete a saved password                                      |")
     print("+---------------------------------------------------------------------+")
+
+#Function that displays the password and underneath it its strength string, bar and percentage:
+def display_password(password,analysis):
+    #Checks if password exists:
+    if not password:
+        print("There is no password to display")
+        return
+    #Checks if analysis exists
+    if not analysis:
+        print("There is no analysis of the password yet")
+        return
+    #If analysis and password exists prints them:
+    print("")
+    print(f"{password}")
+    print(f"{analysis['bar']}")
+    print(f"{analysis['score']}")
+    print(f"{analysis['rating']}")
+    print("")
