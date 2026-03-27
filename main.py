@@ -94,7 +94,7 @@ def main():
                 if label.strip() == "":
                     print("Please1 input a label and not an empty space:")
                 #Saves if the user chose yes and the label is valid:
-                strength = analysis["rating"]
+                strength = analysis["strength"]
                 add_password(passwords, label, password, strength)
                 continue
         #If user wants to view the saved passwords:

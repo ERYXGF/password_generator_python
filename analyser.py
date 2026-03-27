@@ -32,11 +32,11 @@ def calculate_score(password):
         return "password is not valid"
     if 8 <= length <= 11:
         points += 15
-    if 12 < length <= 15:
+    if 12 <= length <= 15:
         points += 25
-    if 16 < length <= 19:
+    if 16 <= length <= 19:
         points += 35
-    if 20 < length <= 24:
+    if 20 <= length <= 24:
         points += 45
     if length >= 25:
         points += 60
@@ -98,6 +98,9 @@ def get_visual_bar(points):
 def analyse_password(password):
     #Defines points:
     points = calculate_score(password)
+    #If the result is a string instead of a number return None:
+    if not isinstance(points, int):
+        return None
     #Converts the function's results to a dictionary:
     difficulty = {
         "score" : points,
