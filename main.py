@@ -17,7 +17,7 @@ ________________________________________________________________________________
 from display import display_menu, display_password, display_saved_passwords, display_generation_config, display_single_password
 from generator import generate_password
 from analyser import analyse_password
-from storage import save_passwords, load_passwords, delete_password
+from storage import load_passwords, delete_password, add_password, label_exists
 
 #Helper function for the generate_password func in generator.py:
 def get_generation_config():
@@ -39,7 +39,7 @@ def get_generation_config():
         use_upper = False
         use_digits = False
         use_symbols = False
-        lower = input("Do you wan to include lower characters in your password (y/n)? ")
+        lower = input("Do you want to include lower characters in your password (y/n)? ")
         if lower.lower() in ["yes", "y"]:
             use_lower = True
         upper = input("Do you want to include upper characters in your password (y/n)? ")
@@ -64,7 +64,7 @@ def main():
     while True:
         #Displays the main menu:
         display_menu()
-        #Validates the user's choice (the one he makes at the main menu)
+        #Validates the user's choice (the one he makes at the main menu):
         try:
             user_choice = int(input("Please choose an option (1-5)"))
         except ValueError:
@@ -75,16 +75,26 @@ def main():
             continue
         #If user wants to generate a password:
         if user_choice == 1:
+            #Calls all the funcs:
             display_generation_config()
-            get_generation_config()
-            generate_password(length, use_lower, use_upper, use_digits, use_symbols)
-            analyse_password(password)
+            length, use_lower, use_upper, use_digits, use_symbols = get_generation_config()
+            password = generate_password(length, use_lower, use_upper, use_digits, use_symbols)
+            analysis = analyse_password(password)
             display_password(password, analysis)
+            #Asks the user if he wants to save:
             answer = input("Do you want to save this password (y/n)? ")
-            if answer in ["y", "yes"]:
-                input("Please input the password's label:")
-                load_passwords()
-                #If label exists print an error and skip save
+            if answer.lower() in ["y", "yes"]:
+                label = input("Please input the password's label:")
+                passwords = load_passwords()
+                #If the label already exists:
+                if label_exists(passwords, label) == True:
+                    print("This label already exists. Please choose a new one: ")
+                    continue
+                #If label is empty:
+                if label.strip() == "":
+                    print("Please1 input a label and not an empty space:")
+                #Saves if the user chose yes and the label is valid:
+                strength = analysis["rating"]
                 add_password(passwords, label, password, strength)
                 continue
         #If user wants to view the saved passwords:
@@ -97,7 +107,23 @@ def main():
             if not passwords:
                 print("There are no passwords saved yet.")
                 continue
-            #Ask + Validate index to delete
+            #Displays saved passwords so that the user sees the index:
+            display_saved_passwords(passwords)
+            #Ask + Validates index to delete:
+            try:
+                index = int(input("Please input the password's index:"))
+            except ValueError:
+                print("Please choose an allowed numerical value: ")
+                continue
+            if index > len(passwords) or index < 1:
+                print("Please choose a correct numerical value:")
+                continue
+            index -= 1
+            #Asks the user to confirm:
+            prompt = input("Are you sure you want to delete this password ?")
+            if prompt.lower() not in ["yes", "y"]:
+                continue
+            #Deletes the password if the index is valid
             delete_password(passwords, index)
         #If user wants to view a specific password based on index:
         if user_choice == 4:
@@ -105,8 +131,24 @@ def main():
             if not passwords:
                 print("There are no passwords saved yet.")
                 continue
-            #Ask user for index + validate it
+            #Ask user for index + validates it:
+            try:
+                entry = int(input("Please input the password's index:"))
+            except ValueError:
+                print("Please choose a numerical value: ")
+                continue
+            if entry > len(passwords) or entry < 1:
+                print("Please choose a correct numerical value:")
+                continue
+            entry -= 1
+            entry = passwords[entry]
+            #Displays the password if the entry was correct:
             display_single_password(entry)
         #If user wants to quit the program:
-        print("Thanks for using the Python Password Generator, see you next time :) !")
-        break
+        if user_choice == 5:
+            print("Thanks for using the Python Password Generator, see you next time :) !")
+            break
+
+#If statement that helps run the main function:
+if __name__ == "__main__":
+    main()

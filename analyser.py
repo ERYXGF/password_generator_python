@@ -101,7 +101,7 @@ def analyse_password(password):
     #Converts the function's results to a dictionary:
     difficulty = {
         "score" : points,
-        "rating" : get_strength_rating(points),
+        "strength" : get_strength_rating(points),
         "bar" : get_visual_bar(points)
     }
     #returns the dictionary:

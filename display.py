@@ -19,8 +19,8 @@ def display_menu():
     print("|                          PASSWORD GENERATOR                         |")
     print("+---------------------------------------------------------------------+")
     print("|     1) Generate a password                                          |")
-    print("|     2) View a saved password                                        |")
-    print("|     3) save a password (with a label)                               |")
+    print("|     2) List all passwords                                           |")
+    print("|     3) Save a password (with a label)                               |")
     print("|     4) View a (specific according to label) saved password          |")        
     print("|     5) Delete a saved password                                      |")
     print("+---------------------------------------------------------------------+")
@@ -40,7 +40,7 @@ def display_password(password,analysis):
     print(f"{password}")
     print(f"{analysis['bar']}")
     print(f"{analysis['score']}")
-    print(f"{analysis['rating']}")
+    print(f"{analysis['strength']}")
     print("")
 
 #Function that prints all existing passwords along with their index, label, date saved and strength rating:
@@ -51,7 +51,7 @@ def display_saved_passwords(passwords):
         return 
     #Prints the password along with the pertaining information:
     for index, item in enumerate(passwords, start = 1):
-        print(f"{index} {item['label']}, {item['date']}, {item['rating']}, {item['password']}")
+        print(f"{index} {item['label']}, {item['date']}, {item['strength']}, {item['password']}")
 
 #Function that prints the whole details of a single password:
 def display_single_password(entry):
@@ -62,11 +62,11 @@ def display_single_password(entry):
     #Prints all the password's information:
     print(f"{entry['label']}")
     print(f"{entry['date']}") 
-    print(f"{entry['rating']}")
+    print(f"{entry['strength']}")
     print(f"{entry['password']}")
 
 #Function that prints the password generation settings header:
 def display_generation_config():
     print("+---------------------------------------------------------------------+")
-    print("|                   PASSWORD GENERATION SETTTINGS                     |")
+    print("|                   PASSWORD GENERATION SETTINGS                      |")
     print("+---------------------------------------------------------------------+")
